@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<html lang ="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Week 7 Homework</title>
+
+	<!-- Styling Css  -->
+	<style type="text/css" href="css/reset.css"></style>
+	<style type="text/css" href="css/style"></style>
+
+	<!-- Jquery and other Javascript Libraries -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+ 
+ <H1>Rock Paper Scissors Game </H1>
+
+ <form>
+	<div>
+		<label>Please enter your name</label>
+		<input type="text">
+	</div>
+	<button type="submit" id="submitbttn">Submit</button>
+ </form>
+	<h2 class="playerName"></h2>
+	<h2 class="yourTurn"></h2>
+
+	<div>
+		<!-- player 1 box, with choice and result -->
+		<div id="player1">
+			<span class="choice" data-pick="rock">Rock</span>
+			<span class="choice" data-pick="paper">Paper</span>
+			<span class="choice" data-pick="scissors">Scissors</span>
+		</div>
+		<!-- result of game -->
+		<div>
+		</div>
+		<!-- player 2 box, with choices and result -->
+		<div id="player2">
+			<span class="choice" data-pick="rock">Rock</span>
+			<span class="choice" data-pick="paper">Paper</span>
+			<span class="choice" data-pick="scissors">Scissors</span>
+		</div>
+	</div>
+	<!-- chat box -->
+	<div>
+		<div id="chatbox"></div>
+	<form>
+		<input type="text">
+		<button type="submit" id="submitbttn">Submit</button>
+	 </form>
+	</div>
+
+
+
+
+<!-- Javascript for this website -->
+<script src="js/app.js"></script>
+</body>
+</html>
