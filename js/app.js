@@ -1,41 +1,40 @@
 $(document).ready(function(){
 
-// Firebase Variables -----------------
+// firebase Data link--------------------------------------
 var gameDATA = new Firebase("https://intense-fire-339.firebaseio.com/");
 
+// Firebase for viewers-----------------------------------
 var connectedData 	= new Firebase("https://intense-fire-339.firebaseio.com/viewers");
 
-	var userData 		= connectedData.push();
-
+// Generate a unique ID for each connection-------------------
+var userData 		= connectedData.push();
 	console.log("userData: " + userData);
-	var presenceRef = new Firebase("https://intense-fire-339.firebaseio.com/.info/connected");
 
+// Check if the user is still connected-----------------------------
+var presenceRef = new Firebase("https://intense-fire-339.firebaseio.com/.info/connected");
 
+	// Checks for changes in data and out puts variables----------------- 
 	gameDATA.on('value',function(snapshot){
 		PlayersinGame = snapshot.child('player').numChildren();
 		player1= snapshot.child('player').child(0);
 		player2= snapshot.child('player').child(1);
 
+		// Allows only for 2 players at a time-----------------------------
 		if (PlayersinGame==2) {
-			$("#PlayerReg").hide();
-			$('#GameOptions').show();
-		}	else {
-			$('#PlayerReg').show();
-			$('#GameOptions').hide();
-		}
+				$("#PlayerReg").hide();
+				$('#GameOptions').show();
+			}else {
+				$('#PlayerReg').show();
+				$('#GameOptions').hide();
+			}
 		});
 
-$("#submitbttn").on('click',function(){
-		$("#PlayerReg").hide();
-		userDATA =  gameDATA.child("player");
-		playerStore= PlayersinGame
-		userNumber = gameDATA.child("player").child(playerStore);
-		
+	// On click function for login---------------------
+	$("#submitbttn").on('click',function(){
 
-	if (PlayersinGame<2){
+		userNumber = gameDATA.child("player").child(PlayersinGame);
+	
 		var name =$("#playerName").val().trim();
-
-
 		PlayerDATA = {
 				user: 	name, 
 				choice: "",
@@ -45,10 +44,6 @@ $("#submitbttn").on('click',function(){
 
 		// userData.set(PlayerDATA);	
 		userNumber.set(PlayerDATA);
-		
-	} else {
-			console.log("Game is Full")
-		};
 
 	// clear the input field
 	$("#playerName").val("");
@@ -63,11 +58,6 @@ presenceRef.on("value", function(snapshot) {
     userData.set(true);
   };
 });
-// -----Game variables-----------
-var rock = "rock";
-var paper= "paper";
-var scissors="scissors";
-
 
 // rock paper scissors game
 $(".choice").on("click",pickRPS);
@@ -122,7 +112,7 @@ function GameLosser(Losser){
 	losses++;
 	playerCode= parseInt(Losser.key());
 	gameDATA.child("player").child(playerCode).update({loss: losses, choice:""})
-	debugger;
+
 };
 
 // function softreset(){
