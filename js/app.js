@@ -2,11 +2,8 @@ $(document).ready(function(){
 
 // Firebase Variables -----------------
 var gameDATA = new Firebase("https://intense-fire-339.firebaseio.com/");
-// set the counter variable to define players-------
-	gameDATA.child("counter");
-	gameDATA.update({counter:0});
 
-	var connectedData 	= new Firebase("https://intense-fire-339.firebaseio.com/viewers");
+var connectedData 	= new Firebase("https://intense-fire-339.firebaseio.com/viewers");
 
 	var userData 		= connectedData.push();
 
@@ -15,30 +12,32 @@ var gameDATA = new Firebase("https://intense-fire-339.firebaseio.com/");
 
 
 	gameDATA.on('value',function(snapshot){
-		counterSet = snapshot.child('counter').val();
 		PlayersinGame = snapshot.child('player').numChildren();
-		if (PlayersinGame>=2) {
-			$("#PlayerReg").hide();
-		}else {
-			$('#PlayerReg').show();
-		}
+		player1= snapshot.child('player').child(0);
+		player2= snapshot.child('player').child(1);
 
+		if (PlayersinGame==2) {
+			$("#PlayerReg").hide();
+			$('#GameOptions').show();
+		}	else {
+			$('#PlayerReg').show();
+			$('#GameOptions').hide();
+		}
 		});
 
 $("#submitbttn").on('click',function(){
-		counterSet++;
+		$("#PlayerReg").hide();
 		userDATA =  gameDATA.child("player");
-		playerStore= "Player"+counterSet
+		playerStore= PlayersinGame
 		userNumber = gameDATA.child("player").child(playerStore);
 		
-		gameDATA.child("counter").set(counterSet);
 
 	if (PlayersinGame<2){
 		var name =$("#playerName").val().trim();
 
 
 		PlayerDATA = {
-				name: 	name, 
+				user: 	name, 
 				choice: "",
 				wins: 	0,
 				loss: 	0,
@@ -75,72 +74,62 @@ $(".choice").on("click",pickRPS);
 
 function pickRPS(){
 	UserPicked= $(this).data('pick');
-	userData.update({choice: UserPicked});
 	userNumber.update({choice: UserPicked});
+	game();
 }
 
-// function pickRPS(){
-// 	if (Player1.choice.length>0 && Player2.choice.length==0){
-// 		choiceP2= $(this).data('pick');
-// 		Player2.choice.push(choiceP2);
-// 		game();
+// player1.val().choice
+function game() {
 
-// 	} else if (Player1.choice.length==0){
-// 		choiceP1= $(this).data('pick');
-// 		Player1.choice.push(choiceP1);
+		if (player1.val().choice === player2.val().choice) {
+			console.log('no winner it is a draw');
+			
+		}
+		if ((player1.val().choice === 'rock') && (player2.val().choice === 'scissors')) {
+			GameWinner(player1);
+			GameLosser(player2);
+		}
+		if ((player1.val().choice === 'rock') && (player2.val().choice === 'paper')) {
+			GameWinner(player2);
+			GameLosser(player1);
+		}
+		if ((player1.val().choice === 'paper') && (player2.val().choice === 'scissors')) {
+			GameWinner(player2);
+			GameLosser(player1);
+		}
+		if ((player1.val().choice === 'paper') && (player2.val().choice === 'rock')) {
+			GameWinner(player1);
+			GameLosser(player2);
+		}
+		if ((player1.val().choice === 'scissors') && (player2.val().choice === 'rock')) {
+			GameWinner(player2);
+			GameLosser(player1);
+		}
+		if ((player1.val().choice === 'scissors') && (player2.val().choice === 'paper')) {
+			GameWinner(player1);
+			GameLosser(player2);
+		}
+	};
 
-// 	} else {
-// 		console.log("everyone made a choice.")
-// 	};
-// 	};
+function GameWinner(winner) {
+	wins = winner.val().wins;
+	wins++;
+	userNumber.update({wins: wins, choice: ""});
+	};
 
-// function GameWinner(winner) {
-// 	console.log(winner.name)
-// 	winner.wins++;
-// 	console.log(winner.wins)
-// 	reseter();
-// 	};
+function GameLosser(Losser){
+	losses = Losser.val().loss;
+	losses++;
+	playerCode= parseInt(Losser.key());
+	gameDATA.child("player").child(playerCode).update({loss: losses, choice:""})
+	debugger;
+};
 
-// function GameLosser(Losser){
-// 	Losser.loss++;
-// 	}
+// function softreset(){
+// 	pla
 
-// function game() {
-// 	console.log(Player1.choice[0]+"player2" + Player2.choice[0]);
+// function hardreset(){
 
-// 		if (Player1.choice[0] === Player2.choice[0] ) {
-// 			console.log('no winner it is a draw');
-// 			GameWinner();
-// 		}
-// 		if ((Player1.choice[0] === 'rock') && (Player2.choice[0] === 'scissors')) {
-// 			GameWinner(Player1);
-// 			GameLosser(Player2);
-// 		}
-// 		if ((Player1.choice[0] === 'rock') && (Player2.choice[0] === 'paper')) {
-// 			GameWinner(Player2);
-// 			GameLosser(Player1);
-// 		}
-// 		if ((Player1.choice[0] === 'paper') && (Player2.choice[0] === 'scissors')) {
-// 			GameWinner(Player2);
-// 			GameLosser(Player1);
-// 		}
-// 		if ((Player1.choice[0] === 'paper') && (Player2.choice[0] === 'rock')) {
-// 			GameWinner(Player1);
-// 			GameLosser(Player2);
-// 		}
-// 		if ((Player1.choice[0] === 'scissors') && (Player2.choice[0] === 'rock')) {
-// 			GameWinner(Player2);
-// 			GameLosser(Player1);
-// 		}
-// 		if ((Player1.choice[0] === 'scissors') && (Player2.choice[0] === 'paper')) {
-// 			GameWinner(Player1);
-// 			GameLosser(Player2);
-// 		}
-// 	};
-
-// function reseter(){
-// 	counter = 1;
-// 	gameDATA.update({counter:1});
-
+// }
 // Closing tag for ready function
 })
