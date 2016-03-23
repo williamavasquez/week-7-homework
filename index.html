@@ -10,36 +10,37 @@
 
 	<!-- Jquery and other Javascript Libraries -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	 <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
 </head>
 <body>
  
  <H1>Rock Paper Scissors Game </H1>
 
- <form>
-	<div>
+ <form id="PlayerReg">
+	<div >
 		<label>Please enter your name</label>
-		<input type="text">
+		<input type="text" id="playerName">
 	</div>
 	<button type="submit" id="submitbttn">Submit</button>
  </form>
-	<h2 class="playerName"></h2>
+	<h2 class="showName"></h2>
 	<h2 class="yourTurn"></h2>
 
 	<div>
 		<!-- player 1 box, with choice and result -->
 		<div id="player1">
-			<span class="choice" data-pick="rock">Rock</span>
-			<span class="choice" data-pick="paper">Paper</span>
-			<span class="choice" data-pick="scissors">Scissors</span>
+			<span class="choice" data-pick="rock">Rock</span></br>
+			<span class="choice" data-pick="paper">Paper</span></br>
+			<span class="choice" data-pick="scissors">Scissors</span></br>
 		</div>
 		<!-- result of game -->
 		<div>
 		</div>
 		<!-- player 2 box, with choices and result -->
 		<div id="player2">
-			<span class="choice" data-pick="rock">Rock</span>
-			<span class="choice" data-pick="paper">Paper</span>
-			<span class="choice" data-pick="scissors">Scissors</span>
+			<span class="choice" data-pick="rock">Rock</span></br>
+			<span class="choice" data-pick="paper">Paper</span></br>
+			<span class="choice" data-pick="scissors">Scissors</span></br>
 		</div>
 	</div>
 	<!-- chat box -->
