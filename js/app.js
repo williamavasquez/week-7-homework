@@ -9,6 +9,7 @@ var connectedData 	= new Firebase("https://intense-fire-339.firebaseio.com/viewe
 // Generate a unique ID for each connection-------------------
 var userData 		= connectedData.push();
 	console.log("userData: " + userData);
+	console.log(userData.key());
 
 // Check if the user is still connected-----------------------------
 var presenceRef = new Firebase("https://intense-fire-339.firebaseio.com/.info/connected");
@@ -34,15 +35,17 @@ var presenceRef = new Firebase("https://intense-fire-339.firebaseio.com/.info/co
 
 		userNumber = gameDATA.child("player").child(PlayersinGame);
 	
+
 		var name =$("#playerName").val().trim();
 		PlayerDATA = {
+			// push the key to delete on disconnect 
+				code: userData.key(),
 				user: 	name, 
 				choice: "",
 				wins: 	0,
 				loss: 	0,
 				}
-
-		// userData.set(PlayerDATA);	
+	
 		userNumber.set(PlayerDATA);
 
 	// clear the input field
@@ -59,6 +62,7 @@ presenceRef.on("value", function(snapshot) {
   };
 });
 
+
 // rock paper scissors game
 $(".choice").on("click",pickRPS);
 
@@ -68,11 +72,11 @@ function pickRPS(){
 	game();
 }
 
-// player1.val().choice
 function game() {
 
 		if (player1.val().choice === player2.val().choice) {
-			console.log('no winner it is a draw');
+			gameDATA.child("player").child(0).update({choice:""});
+			gameDATA.child("player").child(1).update({choice:""})
 			
 		}
 		if ((player1.val().choice === 'rock') && (player2.val().choice === 'scissors')) {
@@ -105,21 +109,23 @@ function GameWinner(winner) {
 	wins = winner.val().wins;
 	wins++;
 	userNumber.update({wins: wins, choice: ""});
+	$('#gameswon').text("Wins: "+ wins);
 	};
 
 function GameLosser(Losser){
 	losses = Losser.val().loss;
 	losses++;
 	playerCode= parseInt(Losser.key());
-	gameDATA.child("player").child(playerCode).update({loss: losses, choice:""})
-
+	gameDATA.child("player").child(playerCode).update({loss: losses, choice:""});
+	$('#gamesLoss').text("Losses: "+ Losser.val().loss)
+	debugger;
 };
 
-// function softreset(){
-// 	pla
+// ****MiSSING****
+// CSS styling
+// delete the player when a player leaves
+// Reassign players after one left
+// *****************
 
-// function hardreset(){
-
-// }
 // Closing tag for ready function
 })
